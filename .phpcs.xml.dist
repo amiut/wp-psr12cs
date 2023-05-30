@@ -1,0 +1,13 @@
+<?xml version="1.0"?>
+<ruleset name="PHPCS">
+    <description>PHP Coding standards in compliance with PSR-12.</description>
+
+    <file>./WpPsr12/Sniffs</file>
+    <config name="testVersion" value="7.0-"/>
+    <arg name="colors"/>
+    <arg value="sp"/>
+
+    <rule ref="PSR12" />
+    <rule ref="PHPCompatibilityWP"/>
+    <rule ref="./WpPsr12/Sniffs/Autoload/Psr4Sniff.php" />
+</ruleset>

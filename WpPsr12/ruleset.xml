@@ -1,0 +1,61 @@
+<?xml version="1.0"?>
+<ruleset name="PSR-12 WordPress coding standards">
+    <description>WordPress Coding standards + PSR-12 standards</description>
+
+    <!--
+    PSR-12 Coding standards
+    -->
+    <rule ref="PSR12">
+        <exclude name="Generic.Files.LineLength.TooLong" />
+    </rule>
+
+    <!--
+    WordPress Core coding standards except the rules that contradicts with PSR12
+    -->
+    <rule ref="WordPress-Core">
+        <exclude name="WordPress.Files.FileName" />
+
+        <!--
+        Disable snake_case
+        -->
+        <exclude name="WordPress.NamingConventions.ValidVariableName.UsedPropertyNotSnakeCase" />
+        <exclude name="WordPress.NamingConventions.ValidVariableName.PropertyNotSnakeCase" />
+        <exclude name="WordPress.NamingConventions.ValidVariableName.VariableNotSnakeCase" />
+        <exclude name="WordPress.NamingConventions.ValidFunctionName.MethodNameInvalid" />
+
+        <!--
+        Disable extra spaces
+        -->
+        <exclude name="Generic.Classes.OpeningBraceSameLine" />
+        <exclude name="Generic.WhiteSpace.DisallowSpaceIndent" />
+        <exclude name="Squiz.Functions.FunctionDeclarationArgumentSpacing" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceBeforeCloseBracket" />
+        <exclude name="PEAR.Functions.FunctionCallSignature.SpaceAfterOpenBracket" />
+        <exclude name="WordPress.Arrays.ArrayDeclarationSpacing" />
+        <exclude name="WordPress.Arrays.ArrayKeySpacingRestrictions" />
+        <exclude name="WordPress.WhiteSpace.ControlStructureSpacing" />
+
+        <!--
+        Disable alignment
+        -->
+        <exclude name="Generic.Formatting.MultipleStatementAlignment" />
+        <exclude name="WordPress.Arrays.MultipleStatementAlignment" />
+
+
+        <exclude name="Generic.Arrays.DisallowShortArraySyntax.Found" />
+        <exclude name="Generic.Functions.OpeningFunctionBraceKernighanRitchie.BraceOnNewLine" />
+    </rule>
+
+    <rule ref="PHPCompatibilityWP" />
+
+    <!--
+    TODO: Make WordPress-Extra optional
+    -->
+    <rule ref="WordPress-Extra"/>
+
+    <!--
+    TODO: Make WordPressVIPMinimum optional
+    -->
+    <rule ref="WordPressVIPMinimum" />
+
+</ruleset>
