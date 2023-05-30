@@ -35,10 +35,10 @@ final class Psr4Sniff implements Sniff
                     'No Autoloaders registered in your composer.json file ' .
                     'If you do not use Psr-4 autoloaders, ' .
                     'you should disable rule: %s',
-                    'NoAutoloaders' // TODO: Better code
+                    self::CODE_INCORRECT_CLASS_NAME // TODO: Better code
                 ),
                 $stackPtr,
-                'NoAutoloaders' // TODO: Better code
+                self::CODE_INCORRECT_CLASS_NAME // TODO: Better code
             );
             return;
         }
@@ -60,20 +60,21 @@ final class Psr4Sniff implements Sniff
     {
         $fileName = $phpcsFile->getFilename();
 
-        foreach ($autoLoaders as $vendorNameSpace => $basePath) {
-            $basePathPosition = strpos($fileName, $basePath);
+        foreach ($autoLoaders as $autoLoaderData) {
+            $basePathPosition = strpos($fileName, $autoLoaderData['path']);
 
             if ($basePathPosition === false) {
                 continue;
             }
 
-            $relativePath = $this->relativePath($fileName, $basePath);
+            $relativePath = $this->relativePath($fileName, $autoLoaderData['path']);
+
             $relativeFqcn = trim(
                 str_replace(
                     '\\',
                     '/',
                     str_replace(
-                        $vendorNameSpace,
+                        $autoLoaderData['namespace'],
                         '',
                         $fqcn
                     )
@@ -99,9 +100,11 @@ final class Psr4Sniff implements Sniff
             substr($fileName, $basePathPosition, strlen($fileName))
         );
 
-        return pathinfo($path, PATHINFO_DIRNAME)
-            . DIRECTORY_SEPARATOR
-            . pathinfo($path, PATHINFO_FILENAME);
+        return str_replace(
+            "." . pathinfo($path, PATHINFO_EXTENSION),
+            "",
+            $path
+        );
     }
 
     private function resolveComposerJsonPath(File $phpcsFile): string
@@ -113,13 +116,16 @@ final class Psr4Sniff implements Sniff
         return $basePath . '/' . $this->composerJsonPath;
     }
 
+    /**
+     * @return array<array{namespace: string, path: string}>
+     */
     private function psr4AutoLoaders(string $composerJsonPath): array
     {
         /** @var array|null $autoLoaders */
-        static $autoLoaders = null;
+        static $result = null;
 
-        if ($autoLoaders !== null) {
-            return $autoLoaders;
+        if ($result !== null) {
+            return $result;
         }
 
         if (!is_readable($composerJsonPath)) {
@@ -149,6 +155,17 @@ final class Psr4Sniff implements Sniff
             $data['autoload-dev']['psr-4'] ?? []
         );
 
-        return $autoLoaders;
+        foreach ($autoLoaders as $namespace => $paths) {
+            $paths = (array) $paths;
+
+            foreach ($paths as $path) {
+                $result[] = [
+                    'namespace' => $namespace,
+                    'path' => $path,
+                ];
+            }
+        }
+
+        return $result;
     }
 }
