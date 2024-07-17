@@ -7,4 +7,4 @@
 
 - PSR-12 rules
 - WordPress coding standards rules (except the rules that contradict psr-12)
-- A Custom sniff to detect PSR-4 autoloaded classes.
+- A Custom sniff to detect PSR-4 autoloaded classes
