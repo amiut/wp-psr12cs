@@ -1,7 +1,7 @@
 # PSR-12 Coding Standards For WordPress
 
 > **Warning**
-> Experimental project: Not recommended to be used in production-ready projects.
+> Experimental project
 
 ## What is included?
 
